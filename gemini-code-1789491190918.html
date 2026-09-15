@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraxRat Official</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            border: 3px solid #ff0000;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff0000;
+        }
+        h2 {
+            color: #ff0000;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ff4d4d;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            background-color: #1a1a1a;
+            border: 1px solid #ff0000;
+            color: #ffffff;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #ff4d4d;
+            box-shadow: 0 0 5px #ff0000;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #cc0000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+        /* Loading Screen Style */
+        .loading-page, .error-page {
+            display: none;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #1a1a1a;
+            border: 1px solid #ff0000;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+            height: 20px;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #ff0000;
+            transition: width 0.1s linear;
+        }
+        .loading-text {
+            margin-top: 15px;
+            color: #ff4d4d;
+            font-size: 14px;
+        }
+        /* 404 Error Page Style */
+        .error-code {
+            font-size: 80px;
+            color: #ff0000;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        .error-text {
+            font-size: 20px;
+            margin-top: 10px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Input Form -->
+    <div class="container" id="mainContainer">
+        <h2>You are Wellcome to CraxRat Official</h2>
+        <form id="userForm" onsubmit="startLoading(event)">
+            <div class="input-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="input-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" required>
+            </div>
+            <div class="input-group">
+                <label for="whatsapp">WhatsApp Number:</label>
+                <input type="text" id="whatsapp" required>
+            </div>
+            <button type="submit">Download</button>
+        </form>
+    </div>
+
+    <!-- Loading Screen (5 Minutes Bar) -->
+    <div class="container loading-page" id="loadingContainer">
+        <h2>Downloading... Please Wait</h2>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="loading-text" id="loadingText">0% Completed</div>
+    </div>
+
+    <!-- 404 Server Error Page -->
+    <div class="container error-page" id="errorContainer">
+        <h1 class="error-code">404</h1>
+        <div class="error-text">Server Error</div>
+        <p style="color: #888; font-size: 12px; margin-top: 20px;">The requested resource could not be found on this server.</p>
+    </div>
+
+    <script>
+        function startLoading(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Hide form and show loading screen
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('loadingContainer').style.display = 'block';
+
+            let progressBar = document.getElementById('progressBar');
+            let loadingText = document.getElementById('loadingText');
+            
+            let totalTime = 300 * 1000; // 5 minutes in milliseconds (300 seconds)
+            let intervalTime = 300; // Update interval in milliseconds
+            let elapsed = 0;
+
+            let timer = setInterval(function() {
+                elapsed += intervalTime;
+                let percentage = (elapsed / totalTime) * 100;
+                
+                if (percentage >= 100) {
+                    percentage = 100;
+                    clearInterval(timer);
+                    // Hide loading screen and show 404 Error page
+                    document.getElementById('loadingContainer').style.display = 'none';
+                    document.getElementById('errorContainer').style.display = 'block';
+                }
+
+                progressBar.style.width = percentage + '%';
+                loadingText.innerText = Math.floor(percentage) + '% Completed';
+            }, intervalTime);
+        }
+    </script>
+
+</body>
+</html>
